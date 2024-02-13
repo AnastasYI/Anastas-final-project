@@ -126,4 +126,5 @@ const getBikes = async (req, res) => {
 		client.close();
 	}
 };
+
 module.exports = { getBikes, upload, uploadBike };

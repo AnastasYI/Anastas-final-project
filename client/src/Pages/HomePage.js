@@ -23,7 +23,7 @@ const HomePage = () => {
 				setIsLoading(false);
 			});
 		setFilteredUploads(uploads);
-	}, [uploads]);
+	}, []);
 
 	const handleCategorySelect = (category) => {
 		if (category === 'All') {

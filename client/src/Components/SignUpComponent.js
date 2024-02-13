@@ -34,7 +34,7 @@ const SignUpComponent = () => {
 		});
 		const data = await response.json();
 		if (response.status === 201) {
-			login(data.user); // Log in the user with the returned data
+			login(data.user);
 
 			console.log('User created and logged in:', data.message);
 			navigate('/');

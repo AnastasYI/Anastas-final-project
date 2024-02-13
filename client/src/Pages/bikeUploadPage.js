@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useUserContext } from '../contexts/UserContext';
+import { UserContext } from '../UserContext';
 import { useNavigate } from 'react-router-dom';
 
 const BikeUploadPage = () => {
-	const [user] = useUserContext();
+	const [user] = UserContext();
 	const [name, setName] = useState('');
 	const [description, setDescription] = useState('');
 	const [category, setCategory] = useState('Select a category');
@@ -43,7 +43,7 @@ const BikeUploadPage = () => {
 				return;
 			}
 			if (image.size > 5000000) {
-				// 5MB size limit
+				// 5MB
 				setImageError('Image size should be less than 5MB.');
 				return;
 			}

@@ -5,19 +5,19 @@ import { useNavigate } from 'react-router-dom';
 const BikesGrid = ({ uploads }) => {
 	const navigate = useNavigate();
 
-	const handleUploadClick = (uploadId) => {
-		navigate(`/upload/${uploadId}`);
-	};
+	const handleBikeClick = (bikeData) => {
+		navigate('/singleBike', { state: { bikeData } });
 
-	return (
-		<Grid>
-			{uploads.map((upload) => (
-				<BikeItem key={upload.id} onClick={() => handleUploadClick(upload.id)}>
-					<BikeImage src={upload.imageUrl} alt={upload.name} />
-				</BikeItem>
-			))}
-		</Grid>
-	);
+		return (
+			<Grid>
+				{uploads.map((upload) => (
+					<BikeItem key={upload.name} onClick={() => handleBikeClick(upload)}>
+						<BikeImage src={upload.imageUrl} alt={upload.name} />
+					</BikeItem>
+				))}
+			</Grid>
+		);
+	};
 };
 
 const Grid = styled.div`
