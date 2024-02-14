@@ -17,6 +17,7 @@ const LoginComponent = () => {
 		const response = await fetch('/user', {
 			method: 'POST',
 			headers: {
+				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
@@ -26,12 +27,12 @@ const LoginComponent = () => {
 		});
 		const data = await response.json();
 		if (response.status === 200) {
-			login(data.user); // Log in the user with the returned data
-			navigate('/'); // Redirect to dashboard or another appropriate page
+			console.log(data);
+			login(data);
+			navigate('/');
 		} else {
 			// Handle login error
 			console.error('Login failed:', data.message);
-			// You can also set an error state and display it to the user
 		}
 	};
 

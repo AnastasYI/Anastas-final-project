@@ -1,7 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const { MONGO_URI } = process.env.MONGO_URI;
+const { MONGO_URI } = process.env;
 const options = { useNewUrlParser: true, useUnifiedTopology: true };
 const { MongoClient } = require('mongodb');
 const getUser = async (req, res) => {
@@ -40,7 +40,7 @@ const createUser = async (req, res) => {
 		await client.connect();
 		const db = client.db('LastProject');
 		const hashedPassword = await bcrypt.hash(password, saltRounds);
-		if (_id.length && username.length && password.length) {
+		if (email.length && username.length && password.length) {
 			const result = await db.collection(`User`).insertOne({
 				email: email,
 				username: username,
@@ -49,9 +49,11 @@ const createUser = async (req, res) => {
 				bikes: [],
 			});
 			result.insertedId
-				? res
-						.status(201)
-						.json({ status: 201, data: _id, message: `User ${_id} created` })
+				? res.status(201).json({
+						status: 201,
+						data: result,
+						message: `User ${email} created`,
+				  })
 				: res.status(404).json({
 						status: 404,
 						data: req.body,
@@ -68,8 +70,8 @@ const createUser = async (req, res) => {
 			// duplicate key
 			res.status(404).json({
 				status: 404,
-				data: _id,
-				message: ` ${_id} already in use for a profile`,
+				data: { email, username, password },
+				message: ` ${email} already in use for a profile`,
 			});
 		} else {
 			res.status(500).json({ status: 500, data: req.body, message: error });

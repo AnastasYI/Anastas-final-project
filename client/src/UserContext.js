@@ -1,19 +1,25 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState, useCallback } from 'react';
 
-// Create the context
 export const UserContext = createContext(null);
 
-// Create a provider component
 export const UserProvider = ({ children }) => {
-	const [user, setUser] = useState(null); // State to hold the current user
+	const [user, setUser] = useState(null);
 
-	// Function to log in a user and update the state
-	const login = (userData) => {
+	const login = useCallback((userData) => {
 		setUser(userData);
-	};
+		console.log('User:', user, localStorage);
+		localStorage.setItem('user', JSON.stringify(userData));
+	}, []);
 
-	// Function to log out a user and clear the state
+	useEffect(() => {
+		const storedUser = localStorage.getItem('user');
+		if (storedUser) {
+			login(JSON.parse(storedUser));
+		}
+	}, []);
+
 	const logout = () => {
+		localStorage.removeItem('user');
 		setUser(null);
 	};
 

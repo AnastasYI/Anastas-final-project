@@ -43,21 +43,20 @@ const NavBar = () => {
 	);
 };
 
-// Styled-components declarations
 const NavBarContainer = styled.nav`
 	background-color: #333;
 	color: white;
 	display: flex;
-	justify-content: center; /* Center items on large screens */
+	justify-content: space-between; // Adjust for space between items
 	align-items: center;
 	padding: 10px 20px;
 	position: relative;
 
 	@media (max-width: 768px) {
-		justify-content: flex-end; /* Align icon to the right on small screens */
+		flex-direction: column; // Stack items vertically
+		align-items: flex-start; // Align to the start for mobile view
 	}
 `;
-
 const NavSection = styled.div`
 	display: flex;
 	align-items: center;
@@ -73,12 +72,10 @@ const MobileNavItems = styled.div`
 	@media (max-width: 768px) {
 		display: flex;
 		flex-direction: column;
-		position: absolute;
-		top: 40px;
-		right: 0;
 		background-color: #333;
 		width: 100%;
 		align-items: center;
+		z-index: 10;
 	}
 `;
 

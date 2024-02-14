@@ -1,6 +1,6 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const cloudinary = require('../cloudinaryConfig'); // Assuming cloudinaryConfig.js is set up
+const cloudinary = require('../cloudinaryConfig');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
@@ -26,24 +26,24 @@ const uploadProfilePic = async (req, res) => {
 	const options = { useNewUrlParser: true, useUnifiedTopology: true };
 
 	try {
-		const { email } = req.body;
-		if (!req.file) return res.status(400).send('No file uploaded.');
+		const { email, profilePic } = req.body;
+		if (!profilePic) return res.status(400).send('No file uploaded.');
 
-		if (!isValidImageMIMEType(req.file.mimetype)) {
+		if (!isValidImageMIMEType(profilePic.mimetype)) {
 			return res
 				.status(400)
 				.send('Invalid file type. Only image files are allowed.');
 		}
 
-		const isValidImage = await validateImageWithSharp(req.file.buffer);
+		const isValidImage = await validateImageWithSharp(profilePic.buffer);
 		if (!isValidImage) {
 			return res.status(400).send('Invalid image file.');
 		}
 
 		const dataUrl = `data:${
-			req.file.mimetype
-		};base64,${req.file.buffer.toString('base64')}`;
-		const result = await cloudinary.uploader.upload(dataUrl, {
+			profilePic.mimetype
+		};base64,${profilePic.buffer.toString('base64')}`;
+		const result = await cloudinary.uploader.upload(profilePic, {
 			resource_type: 'image',
 		});
 

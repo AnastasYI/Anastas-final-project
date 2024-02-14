@@ -11,6 +11,7 @@ import LogInPage from './Pages/LogInPage';
 import ProfilePage from './Pages/ProfilePage';
 import HomePage from './Pages/HomePage';
 import BikeUploadPage from './Pages/bikeUploadPage';
+import SingleBikePage from './Pages/singleBikePage';
 import { UserProvider } from './UserContext';
 const App = () => {
 	useEffect(() => {
@@ -27,6 +28,7 @@ const App = () => {
 					<Route path='/LogIn' element={<LogInPage />} />
 					<Route path='/profile' element={<ProfilePage />} />
 					<Route path='/bikeUpload' element={<BikeUploadPage />} />
+					<Route path='/bike' element={<SingleBikePage />} />
 				</Routes>
 			</Router>
 		</UserProvider>

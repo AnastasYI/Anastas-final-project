@@ -24,6 +24,7 @@ const SignUpComponent = () => {
 		const response = await fetch('/createUser', {
 			method: 'POST',
 			headers: {
+				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
@@ -34,7 +35,7 @@ const SignUpComponent = () => {
 		});
 		const data = await response.json();
 		if (response.status === 201) {
-			login(data.user);
+			login(data);
 
 			console.log('User created and logged in:', data.message);
 			navigate('/');

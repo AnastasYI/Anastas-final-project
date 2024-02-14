@@ -6,24 +6,27 @@ const BikesGrid = ({ uploads }) => {
 	const navigate = useNavigate();
 
 	const handleBikeClick = (bikeData) => {
-		navigate('/singleBike', { state: { bikeData } });
-
-		return (
-			<Grid>
-				{uploads.map((upload) => (
-					<BikeItem key={upload.name} onClick={() => handleBikeClick(upload)}>
-						<BikeImage src={upload.imageUrl} alt={upload.name} />
-					</BikeItem>
-				))}
-			</Grid>
-		);
+		navigate('/bike', { state: { bikeData } });
 	};
+	if (!uploads || uploads.length === 0) {
+		return <div>No bikes to display</div>;
+	}
+	return (
+		<Grid>
+			{uploads.map((upload) => (
+				<BikeItem key={upload.name} onClick={() => handleBikeClick(upload)}>
+					<BikeName>{upload.name}</BikeName>
+					<BikeImage src={upload.images[0]} alt={upload.name} />
+				</BikeItem>
+			))}
+		</Grid>
+	);
 };
 
 const Grid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-	gap: 10px;
+	display: flex;
+	flex-wrap: wrap; // For responsiveness
+	gap: 10px; // Added gap
 `;
 
 const BikeItem = styled.div`
@@ -31,12 +34,17 @@ const BikeItem = styled.div`
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	overflow: hidden;
+	text-align: center; // Center the content
 `;
 
 const BikeImage = styled.img`
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	width: 50vh; // Adjust to fit the container
+
+	height: auto; // Maintain aspect ratio
+`;
+
+const BikeName = styled.h3`
+	margin-top: 10px;
 `;
 
 export default BikesGrid;

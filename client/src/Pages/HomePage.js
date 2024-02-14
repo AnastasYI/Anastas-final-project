@@ -12,6 +12,7 @@ const HomePage = () => {
 		setIsLoading(true);
 		let url = '/bikes';
 		fetch(url, {
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
@@ -20,22 +21,24 @@ const HomePage = () => {
 			.then((res) => res.json())
 			.then((res) => {
 				setUploads(res.data);
+				setFilteredUploads(res.data);
 				setIsLoading(false);
 			});
-		setFilteredUploads(uploads);
 	}, []);
 
 	const handleCategorySelect = (category) => {
-		if (category === 'All') {
+		if (!category || category === 'All') {
 			setFilteredUploads(uploads);
 		} else {
 			const filtered = uploads.filter((upload) => upload.category === category);
 			setFilteredUploads(filtered);
+			console.log(filteredUploads);
 		}
 	};
 
 	return (
 		<HomeContainer>
+			{isLoading && <p>Loading...</p>}
 			<SortOptions onCategorySelect={handleCategorySelect} />
 			<BikesGrid uploads={filteredUploads} />
 		</HomeContainer>

@@ -13,7 +13,6 @@ const LogInPage = () => {
 	);
 };
 const PageContainer = styled.div`
-	background-image: url('path-to-your-bicycle-background.jpg'); /* Replace with your image path */
 	background-size: cover;
 	height: 100vh;
 	display: flex;

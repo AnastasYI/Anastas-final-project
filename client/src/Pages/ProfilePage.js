@@ -1,11 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import ProfilePicture from '../Components/ProfilePicture';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { UserContext } from '../UserContext'; // For accessing user data
 const ProfilePage = () => {
 	const { user, updateUser } = useContext(UserContext);
-	const [profilePictureUrl, setProfilePictureUrl] = useState(user.profilePic);
+	const [profilePictureUrl, setProfilePictureUrl] = useState('');
+	useEffect(() => {
+		if (user) {
+			setProfilePictureUrl(user.profilePic);
+		}
+	}, [user]);
 	const handlePictureChange = async (e) => {
 		const file = e.target.files[0];
 		if (!file) return;
@@ -16,7 +21,11 @@ const ProfilePage = () => {
 
 		try {
 			const response = await fetch('/upload-profile-pic', {
-				method: 'POST',
+				method: 'PATCH',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
 				body: formData,
 			});
 			const data = await response.json();
@@ -25,11 +34,9 @@ const ProfilePage = () => {
 				updateUser({ ...user, profilePic: data.url }); // Update user context
 			} else {
 				console.error('Upload failed:', data.message);
-				// Handle upload error
 			}
 		} catch (error) {
 			console.error('Error:', error);
-			// Handle error
 		}
 	};
 
@@ -49,7 +56,7 @@ const ProfilePage = () => {
 						profilePictureUrl={profilePictureUrl}
 						onPictureChange={handlePictureChange}
 					/>
-					<Username>{user.username}</Username>
+					<Username>{user && user.username}</Username>
 				</ProfilePictureContainer>
 			</ProfileHeader>
 			<Button onClick={navigateToBikeUpload}>Upload Bike</Button>
@@ -57,11 +64,16 @@ const ProfilePage = () => {
 			<PostsGrid></PostsGrid>
 			<YourCommentsLabel>Your Comments</YourCommentsLabel>
 			<PostsGrid>
-				{user.bikes.map((post) => (
-					<PostItem key={post.name} onClick={() => handlePostClick(post.name)}>
-						<PostImage src={post.images[0]} alt={`Post ${post.name}`} />
-					</PostItem>
-				))}
+				{user &&
+					user.bikes &&
+					user.bikes.map((post) => (
+						<PostItem
+							key={post.name}
+							onClick={() => handlePostClick(post.name)}
+						>
+							<PostImage src={post.images[0]} alt={`Post ${post.name}`} />
+						</PostItem>
+					))}
 			</PostsGrid>
 		</ProfileContainer>
 	);
